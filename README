@@ -1,0 +1,36 @@
+Konsolowa aplikacja do dodawania i usuwania samochodów w bazie danych.
+- id
+- nr rejestracyjny
+- przebieg
+- marka i model
+- rocznik
+- typ (enum KOMBI, SEDAN, HATCHBACK, CABRIO, SUV) (int / varchar)
+- nazwisko wlasciciela
+Metody:
+- dodaj samochód
+- usuń samochód po identyfikatorze
+- usun samochod po numerze rejestracyjnym (który powinien być unikalny)
+- listowanie rekordów
+- szukanie rekordów po rejestracji (Like)
+- szukanie rekordów po nazwisku właściciela
+- szukanie po marce/modelu
+
+Dodaj tabelę relacyjną z kluczem obcym w tabeli Car:
+Klasa Zlecenie (nie nazywaj klasy Order słowo kluczowe order jest zarezerwowane wewnątrz mysql):
+- data dodania
+- czy zrealizowane (boolean)
+- data zrealizowania
+- treść zlecenia
+- id samochodu z którym mamy relację
+Możliwe czynności które można wykonać:
+- listuj wszystkie zlecenia samochodu po id
+- dodaj zlecenie (samochodowi o id)
+- oznacz zlecenie jako zrealizowane (ustawia czas realizacji jako moment wywołania) (do zrealizowania zlecenia
+potrzebujemy id samochodu i id zlecenia)
+- listuj zlecenia niezrealizowane
+- listuj zlecenia zrealizowane
+- listuj zlecenia z ostatnich N dni. Użytkownik podaje N (ilość dni) jako parametr, a aplikacja wczytuje zlecenia
+sprzed N dni.
+
+Jeśli udało Ci się zrealizować całą treść, to przemyśl w jaki sposób stworzyć instancję MysqlConnection tak,
+aby oba DAO współdzieliły tą instancję, a nie tworzyły jej sobie indywidualnie i oddzielnie.
