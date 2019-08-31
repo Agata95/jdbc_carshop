@@ -10,20 +10,19 @@ import lombok.NoArgsConstructor;
 
 public class Car {
     private Long id;
-    private String nr_rejestracyjny;
-    private Double przebieg;
-    private String marka_model;
-    private String rocznik;
-    private Types typ;
-    private String nazwisko_wlasiciela;
+    private String registration_no;
+    private Double mileage;
+    private String make_and_model;
+    private String year;
+    private Types type;
+    private String surname_owner;
 
-    public Car(String nr_rejestracyjny, Double przebieg, String marka_model,
-               String rocznik, Types typ, String nazwisko_wlasiciela) {
-        this.nr_rejestracyjny = nr_rejestracyjny;
-        this.przebieg = przebieg;
-        this.marka_model = marka_model;
-        this.rocznik = rocznik;
-        this.typ = typ;
-        this.nazwisko_wlasiciela = nazwisko_wlasiciela;
+    public Car(String registration_no, Double mileage, String make_and_model, String year, Types type, String surname_owner) {
+        this.registration_no = registration_no;
+        this.mileage = mileage;
+        this.make_and_model = make_and_model;
+        this.year = year;
+        this.type = type;
+        this.surname_owner = surname_owner;
     }
 }
