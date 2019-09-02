@@ -23,13 +23,43 @@ public class LoadFromUser {
                     carDao.insertCar(createCar());
                     break;
                 case "delete":
+                    carDao.removeCar(howRemoveCar());
+                    break;
+                case "list":
+                    carDao.listAllCars();
                     break;
                 case "select":
                     break;
             }
-
-
         } while (!command.equalsIgnoreCase("quit"));
+    }
+
+    /**
+     * This method ask user how delete the car (by id ora by registration number).
+     */
+    public String howRemoveCar() {
+        System.out.println("Select how want to delete the car: by id (id) / by registration number (no).");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("id")) {
+            String id = whichIdToRemove();
+            return "id" + id;
+        } else if (choice.equalsIgnoreCase("no")) {
+            String no = whichNumberToRemove();
+            return "no" + no;
+        } else {
+            System.out.println("Wrong answer. Try again.");
+            return howRemoveCar();
+        }
+    }
+
+    public String whichIdToRemove() {
+        System.out.println("Write car's id to remove:");
+        return scanner.nextLine();
+    }
+
+    public String whichNumberToRemove() {
+        System.out.println("Write car's registration number to remove:");
+        return scanner.nextLine();
     }
 
     /**
