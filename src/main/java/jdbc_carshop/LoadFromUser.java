@@ -29,9 +29,46 @@ public class LoadFromUser {
                     carDao.listAllCars();
                     break;
                 case "select":
+                    carDao.selectCars(howSelect());
                     break;
             }
         } while (!command.equalsIgnoreCase("quit"));
+    }
+
+    /**
+     * This method ask user how select list of cars.
+     */
+    private String howSelect() {
+        System.out.println("How want to select cars:\n1. by id (id)\n" +
+                "2. by registration number (no)\n3. by owner's surname (surname)\n" +
+                "4. by make and model (mm)");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("id")) {
+            String id = whichId();
+            return "id" + id;
+        } else if (choice.equalsIgnoreCase("no")) {
+            String no = whichNumber();
+            return "no" + no;
+        } else if (choice.equalsIgnoreCase("surname")) {
+            String surname = whichSurname();
+            return "surname" + surname;
+        }else if (choice.equalsIgnoreCase("mm")) {
+            String mm = whichMakeModel();
+            return "mm" + mm;
+        }else {
+            System.out.println("Wrong answer. Try again.");
+            return howSelect();
+        }
+    }
+
+    private String whichMakeModel() {
+        System.out.println("Write car's make and model:");
+        return scanner.nextLine();
+    }
+
+    private String whichSurname() {
+        System.out.println("Write owner's surname:");
+        return scanner.nextLine();
     }
 
     /**
@@ -41,10 +78,10 @@ public class LoadFromUser {
         System.out.println("Select how want to delete the car: by id (id) / by registration number (no).");
         String choice = scanner.nextLine();
         if (choice.equalsIgnoreCase("id")) {
-            String id = whichIdToRemove();
+            String id = whichId();
             return "id" + id;
         } else if (choice.equalsIgnoreCase("no")) {
-            String no = whichNumberToRemove();
+            String no = whichNumber();
             return "no" + no;
         } else {
             System.out.println("Wrong answer. Try again.");
@@ -52,13 +89,13 @@ public class LoadFromUser {
         }
     }
 
-    public String whichIdToRemove() {
-        System.out.println("Write car's id to remove:");
+    public String whichId() {
+        System.out.println("Write car's id:");
         return scanner.nextLine();
     }
 
-    public String whichNumberToRemove() {
-        System.out.println("Write car's registration number to remove:");
+    public String whichNumber() {
+        System.out.println("Write car's registration number:");
         return scanner.nextLine();
     }
 

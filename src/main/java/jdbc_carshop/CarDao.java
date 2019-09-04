@@ -24,12 +24,56 @@ public class CarDao {
         }
     }
 
-    public List<Car> selectCars() throws SQLException {
+    public List<Car> selectCars(String howSelect) throws SQLException {
         List<Car> carList = new ArrayList<>();
         try (Connection connection = mysqlConnection.getConnection()) {
+            if (howSelect.contains("id")) {
+                String id = howSelect.substring(2);
+                try (PreparedStatement statement = connection.prepareStatement(SELECT_ID_QUERY)) {
+                    statement.setLong(1, Long.parseLong(id));
 
+                    addCarsToList(carList, statement);
+                }
+                printListOfCars(carList);
+            } else if (howSelect.contains("no")) {
+
+                shortMethodToSelectString(howSelect, carList, connection, 2, SELECT_NO_QUERY);
+            } else if (howSelect.contains("surname")) {
+
+                shortMethodToSelectString(howSelect, carList, connection, 7, SELECT_NAME_QUERY);
+            } else if (howSelect.contains("mm")) {
+
+                shortMethodToSelectString(howSelect, carList, connection, 2, SELECT_MAKE_MODEL_QUERY);
+            }
+            return carList;
         }
-        return carList;
+    }
+
+    private void shortMethodToSelectString(String howSelect, List<Car> carList, Connection connection, int i, String selectNoQuery) throws SQLException {
+        String no = howSelect.substring(i);
+        try (PreparedStatement statement = connection.prepareStatement(selectNoQuery)) {
+            statement.setString(1, no);
+
+            addCarsToList(carList, statement);
+        }
+        printListOfCars(carList);
+    }
+
+    private void printListOfCars(List<Car> carList) {
+        for (Car car : carList) {
+            System.out.println(car);
+        }
+    }
+
+    private void addCarsToList(List<Car> carList, PreparedStatement statement) throws SQLException {
+        statement.execute();
+
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Car car = getCars(resultSet);
+            carList.add(car);
+        }
     }
 
     public List<Car> listAllCars() throws SQLException {
@@ -43,9 +87,7 @@ public class CarDao {
                     carList.add(car);
                 }
             }
-            for (Car car : carList) {
-                System.out.println(car);
-            }
+            printListOfCars(carList);
         }
         return carList;
     }
@@ -105,7 +147,7 @@ public class CarDao {
                 statement.setString(5, String.valueOf(car.getType()));
                 statement.setString(6, car.getSurname_owner());
 
-                int affectedRecords = statement.executeUpdate();
+                statement.executeUpdate();
 
                 ResultSet resultSet = statement.getGeneratedKeys();
 
