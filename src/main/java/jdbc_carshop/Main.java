@@ -8,8 +8,9 @@ public class Main {
 
         try {
             CarDao carDao = new CarDao();
+            CarOrderDao carOrderDao = new CarOrderDao();
             LoadFromUser load = new LoadFromUser();
-            load.application(carDao);
+            load.application(carDao, carOrderDao);
 
         } catch (IOException e) {
             System.err.println("Configuration file error.");

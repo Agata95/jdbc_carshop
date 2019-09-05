@@ -11,28 +11,84 @@ public class LoadFromUser {
     /**
      * Application for user, what user want to do.
      */
-    public void application(CarDao carDao) throws SQLException {
+    public void application(CarDao carDao, CarOrderDao carOrderDao) throws SQLException {
         String command = null;
         do {
-            System.out.println("What do you want to do?\n1. Add new car (add)\n2. Remove car from the database (delete)" +
-                    "\n3. List all database (list)\n4. Search cars in database (select)\n4. Quit (quit)");
+            System.out.println("What do you want to do?\n1. Add new (add)\n2. Remove from the database (delete)" +
+                    "\n3. List all cars database (list)\n4. Search in database (select)\n4. Quit (quit)");
             command = scanner.nextLine();
 
             switch (command) {
                 case "add":
-                    carDao.insertCar(createCar());
+                    add(carDao, carOrderDao);
                     break;
                 case "delete":
-                    carDao.removeCar(howRemoveCar());
+                    delete(carDao, carOrderDao);
                     break;
                 case "list":
                     carDao.listAllCars();
                     break;
                 case "select":
-                    carDao.selectCars(howSelect());
+                    select(carDao, carOrderDao);
                     break;
             }
         } while (!command.equalsIgnoreCase("quit"));
+    }
+
+    private void select(CarDao carDao, CarOrderDao carOrderDao) throws SQLException {
+        System.out.println("Car or Order? (car) / (order)");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("car")) {
+            carDao.selectCars(howSelect());
+        } else if (choice.equalsIgnoreCase("order")) {
+            carOrderDao.selectOrders(howSelectOrders());
+        } else select(carDao, carOrderDao);
+    }
+
+    private void delete(CarDao carDao, CarOrderDao carOrderDao) throws SQLException {
+        System.out.println("Car or Order? (car) / (order)");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("car")) {
+            carDao.removeCar(howRemoveCar());
+        } else if (choice.equalsIgnoreCase("order")) {
+
+        } else delete(carDao, carOrderDao);
+    }
+
+    private void add(CarDao carDao, CarOrderDao carOrderDao) throws SQLException {
+        System.out.println("Car or Order? (car) / (order)");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("car")) {
+            carDao.insertCar(createCar());
+        } else if (choice.equalsIgnoreCase("order")) {
+
+        } else add(carDao, carOrderDao);
+    }
+
+    private String howSelectOrders() {
+        System.out.println("Select orders:\n1. by car's id (id)\n" +
+                "2. which are done (done)\n3. which are not done (not)\n" +
+                "4. by few days age (days)");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("id")) {
+            String id = whichId();
+            return "id" + id;
+        } else if (choice.equalsIgnoreCase("done")) {
+            return "done";
+        } else if (choice.equalsIgnoreCase("not")) {
+            return "not";
+        } else if (choice.equalsIgnoreCase("days")) {
+            String days = howManyDays();
+            return "days" + days;
+        } else {
+            System.out.println("Wrong answer. Try again.");
+            return howSelectOrders();
+        }
+    }
+
+    private String howManyDays() {
+        System.out.println("Write how many days ago:");
+        return scanner.nextLine();
     }
 
     /**
@@ -52,10 +108,10 @@ public class LoadFromUser {
         } else if (choice.equalsIgnoreCase("surname")) {
             String surname = whichSurname();
             return "surname" + surname;
-        }else if (choice.equalsIgnoreCase("mm")) {
+        } else if (choice.equalsIgnoreCase("mm")) {
             String mm = whichMakeModel();
             return "mm" + mm;
-        }else {
+        } else {
             System.out.println("Wrong answer. Try again.");
             return howSelect();
         }
