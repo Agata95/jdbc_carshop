@@ -61,8 +61,20 @@ public class LoadFromUser {
         if (choice.equalsIgnoreCase("car")) {
             carDao.insertCar(createCar());
         } else if (choice.equalsIgnoreCase("order")) {
-
+            carOrderDao.insertOrders(createOrder());
         } else add(carDao, carOrderDao);
+    }
+
+    private CarOrder createOrder() {
+        CarOrder carOrder = new CarOrder();
+        System.out.println("Fill few informations about new order.\nWrite order content:");
+        carOrder.setOrderContent(scanner.nextLine());
+
+        System.out.println("Write car id:");
+        Long carId = scanner.nextLong();
+//        należy poszukać, czy istnieje takie id auta w bazie
+
+        return carOrder;
     }
 
     private String howSelectOrders() {

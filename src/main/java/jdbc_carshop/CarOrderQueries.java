@@ -13,7 +13,7 @@ public interface CarOrderQueries {
             ");";
 
     String INSERT_QUERY = "insert into `orders`(`addDate`, `orderContent`, " +
-            "`carId`) values (now(), ?, ?);";
+            "`carId`) values (NOW(), ?, ?);";
 
     String UPDATE_ORDER_IS_DONE_QUERY = "update `orders` set `isDone` = 1, `doneDate` = now()" +
             "where (id = ? and carId = ?)";

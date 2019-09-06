@@ -1,10 +1,7 @@
 package jdbc_carshop;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +26,28 @@ public class CarOrderDao {
         }
     }
 
+    public void insertOrders(CarOrder carOrder) throws SQLException {
+        try (Connection connection = mysqlConnection.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setString(1, carOrder.getOrderContent());
+                statement.setLong(2, carOrder.getCarId());
+
+                statement.executeUpdate();
+
+                ResultSet resultSet = statement.getGeneratedKeys();
+
+                if (resultSet.next()) {
+                    Long generatedId = resultSet.getLong(1);
+                    System.out.println("Order (id: " + generatedId + ") was insert successfully.");
+                }
+            }
+        }
+    }
+
     public List<CarOrder> selectOrders(String howSelect) throws SQLException {
         List<CarOrder> carOrderList = new ArrayList<>();
         try (Connection connection = mysqlConnection.getConnection()) {
-            if(howSelect.equalsIgnoreCase("id")){
+            if (howSelect.equalsIgnoreCase("id")) {
                 String id = howSelect.substring(2);
                 try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
                     statement.setLong(1, Long.parseLong(id));
@@ -40,19 +55,19 @@ public class CarOrderDao {
                     addOrdersToList(carOrderList, statement);
                 }
                 printListOfOrders(carOrderList);
-            } else if (howSelect.equalsIgnoreCase("done")){
+            } else if (howSelect.equalsIgnoreCase("done")) {
                 try (PreparedStatement statement = connection.prepareStatement(SELECT_IS_DONE_QUERY)) {
 
                     addOrdersToList(carOrderList, statement);
                 }
                 printListOfOrders(carOrderList);
-            } else if (howSelect.equalsIgnoreCase("not")){
+            } else if (howSelect.equalsIgnoreCase("not")) {
                 try (PreparedStatement statement = connection.prepareStatement(SELECT_IS_NOT_DONE_QUERY)) {
 
                     addOrdersToList(carOrderList, statement);
                 }
                 printListOfOrders(carOrderList);
-            } else if (howSelect.equalsIgnoreCase("days")){
+            } else if (howSelect.equalsIgnoreCase("days")) {
                 String days = howSelect.substring(4);
                 try (PreparedStatement statement = connection.prepareStatement(SELECT_ORDERS_BY_DAYS_QUERY)) {
 
