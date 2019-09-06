@@ -26,6 +26,12 @@ public class CarOrderDao {
         }
     }
 
+    public void updateOrder() throws SQLException {
+        try (Connection connection = mysqlConnection.getConnection()) {
+
+        }
+    }
+
     public void insertOrders(CarOrder carOrder) throws SQLException {
         try (Connection connection = mysqlConnection.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {

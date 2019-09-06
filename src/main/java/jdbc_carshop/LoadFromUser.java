@@ -1,5 +1,6 @@
 package jdbc_carshop;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +12,7 @@ public class LoadFromUser {
     /**
      * Application for user, what user want to do.
      */
-    public void application(CarDao carDao, CarOrderDao carOrderDao) throws SQLException {
+    public void application(CarDao carDao, CarOrderDao carOrderDao) throws SQLException, IOException {
         String command = null;
         do {
             System.out.println("What do you want to do?\n1. Add new (add)\n2. Remove from the database (delete)" +
@@ -55,7 +56,7 @@ public class LoadFromUser {
         } else delete(carDao, carOrderDao);
     }
 
-    private void add(CarDao carDao, CarOrderDao carOrderDao) throws SQLException {
+    private void add(CarDao carDao, CarOrderDao carOrderDao) throws SQLException, IOException {
         System.out.println("Car or Order? (car) / (order)");
         String choice = scanner.nextLine();
         if (choice.equalsIgnoreCase("car")) {
@@ -69,10 +70,9 @@ public class LoadFromUser {
         CarOrder carOrder = new CarOrder();
         System.out.println("Fill few informations about new order.\nWrite order content:");
         carOrder.setOrderContent(scanner.nextLine());
+        String carId = whichId();
 
-        System.out.println("Write car id:");
-        Long carId = scanner.nextLong();
-//        należy poszukać, czy istnieje takie id auta w bazie
+        carOrder.setCarId(Long.valueOf(carId));
 
         return carOrder;
     }
